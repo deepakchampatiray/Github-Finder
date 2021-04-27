@@ -1,51 +1,55 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext, useState } from 'react';
+import { AlertContext } from '../../context/Alert';
+import { GithubContext } from '../../context/Github';
 
-class Search extends Component {
-  static propTypes = {
-    searchUser: PropTypes.func.isRequired,
-    clear: PropTypes.func.isRequired,
-    showClear: PropTypes.bool.isRequired,
-  };
-  state = {
-    text: '',
-  };
+const Search = () => {
+  let [text, setText] = useState('');
+  const { searchUser, showClear, clear } = useContext(GithubContext);
+  const { setAlert } = useContext(AlertContext);
 
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    this.props.searchUser(this.state.text);
-    this.setState({ text: '' });
+    if (!text) {
+      setAlert('Please enter a search value.');
+      setTimeout(() => {
+        setAlert(null);
+      }, 5000);
+      return;
+    }
+    searchUser(text);
+    setText('');
   };
-  onChange = (e) => {
-    this.setState({ text: e.target.value });
+
+  const onChange = (e) => {
+    setText(e.target.value);
   };
-  render() {
-    const { showClear, clear } = this.props;
-    return (
-      <form className='form' onSubmit={this.onSubmit}>
+
+  return (
+    <form className='form' onSubmit={onSubmit}>
+      <input
+        type='text'
+        name='text'
+        placeholder='User Search ...'
+        onChange={onChange}
+        value={text}
+      />
+      <input type='submit' value='Search' className='btn btn-dark btn-block' />
+      {showClear && (
         <input
-          type='text'
-          name='text'
-          placeholder='User Search ...'
-          onChange={this.onChange}
-          value={this.state.text}
+          type='reset'
+          value='Clear'
+          className='btn btn-danger btn-block'
+          onClick={clear}
         />
-        <input
-          type='submit'
-          value='Search'
-          className='btn btn-dark btn-block'
-        />
-        {showClear && (
-          <input
-            type='reset'
-            value='Clear'
-            className='btn btn-danger btn-block'
-            onClick={clear}
-          />
-        )}
-      </form>
-    );
-  }
-}
+      )}
+    </form>
+  );
+};
+
+// Search.propTypes = {
+//   searchUser: PropTypes.func.isRequired,
+//   clear: PropTypes.func.isRequired,
+//   showClear: PropTypes.bool.isRequired,
+// };
 
 export default Search;

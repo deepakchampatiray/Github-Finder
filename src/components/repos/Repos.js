@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import RepoItem from './RepoItem';
 
 function Repos(props) {
+  console.log('In Repos', props);
   return (
     <Fragment>
       {props.repos.map((repo) => (

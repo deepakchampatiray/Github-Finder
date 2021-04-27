@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { AlertContext } from '../../context/Alert';
 
-function Alert({ alert }) {
+function Alert() {
+  const { alert } = useContext(AlertContext);
   return (
     alert && (
       <div className={`alert alert-${alert.type}`}>

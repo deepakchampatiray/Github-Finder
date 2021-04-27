@@ -6,7 +6,12 @@ function Spinner() {
     <img
       src={spinner}
       alt='Loading...'
-      style={{ display: 'block', margin: 'auto', width: '60px' }}
+      style={{
+        display: 'block',
+        margin: 'auto',
+        width: '160px',
+        height: '160px',
+      }}
     />
   );
 }
